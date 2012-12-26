@@ -2,6 +2,7 @@ include(common-config.pri)
 
 TEMPLATE = subdirs
 SUBDIRS = \
+    folderlistmodel \
     src
 CONFIG += ordered
 
