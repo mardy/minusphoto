@@ -74,6 +74,7 @@ class QDeclarativeFolderListModel : public QAbstractListModel, public QDeclarati
     Q_PROPERTY(SortField sortField READ sortField WRITE setSortField)
     Q_PROPERTY(bool sortReversed READ sortReversed WRITE setSortReversed)
     Q_PROPERTY(bool showDirs READ showDirs WRITE setShowDirs)
+    Q_PROPERTY(bool showFiles READ showFiles WRITE setShowFiles)
     Q_PROPERTY(bool showDotAndDotDot READ showDotAndDotDot WRITE setShowDotAndDotDot)
     Q_PROPERTY(bool showOnlyReadable READ showOnlyReadable WRITE setShowOnlyReadable)
     Q_PROPERTY(int count READ count)
@@ -113,6 +114,8 @@ public:
 
     bool showDirs() const;
     void  setShowDirs(bool);
+    bool showFiles() const;
+    void  setShowFiles(bool);
     bool showDotAndDotDot() const;
     void  setShowDotAndDotDot(bool);
     bool showOnlyReadable() const;

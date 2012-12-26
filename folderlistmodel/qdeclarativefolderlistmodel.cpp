@@ -430,6 +430,31 @@ void  QDeclarativeFolderListModel::setShowDirs(bool on)
 }
 
 /*!
+    \qmlproperty bool FolderListModel::showFiles
+
+    If true, files are included in the model; otherwise only directories
+    are included.
+
+    By default, this property is true.
+
+    \sa showDirs
+*/
+bool QDeclarativeFolderListModel::showFiles() const
+{
+    return d->model.filter() & QDir::Files;
+}
+
+void  QDeclarativeFolderListModel::setShowFiles(bool on)
+{
+    if (!(d->model.filter() & QDir::Files) == !on)
+        return;
+    if (on)
+        d->model.setFilter(d->model.filter() | QDir::Files);
+    else
+        d->model.setFilter(d->model.filter() & ~QDir::Files);
+}
+
+/*!
     \qmlproperty bool FolderListModel::showDotAndDotDot
 
     If true, the "." and ".." directories are included in the model; otherwise
