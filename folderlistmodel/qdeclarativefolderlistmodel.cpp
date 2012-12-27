@@ -41,6 +41,7 @@
 
 //![code]
 #include "qdeclarativefolderlistmodel.h"
+#include <QDateTime>
 #include <QDirModel>
 #include <QDebug>
 #include <qdeclarativecontext.h>
@@ -158,6 +159,8 @@ QDeclarativeFolderListModel::QDeclarativeFolderListModel(QObject *parent)
     QHash<int, QByteArray> roles;
     roles[FileNameRole] = "fileName";
     roles[FilePathRole] = "filePath";
+    roles[FileModifiedRole] = "fileModified";
+    roles[FileAccessedRole] = "fileAccessed";
     setRoleNames(roles);
 
     d = new QDeclarativeFolderListModelPrivate;
@@ -186,6 +189,17 @@ QVariant QDeclarativeFolderListModel::data(const QModelIndex &index, int role) c
             rv = d->model.data(modelIndex, QDirModel::FileNameRole).toString();
         else if (role == FilePathRole)
             rv = QUrl::fromLocalFile(d->model.data(modelIndex, QDirModel::FilePathRole).toString());
+        else if (role == FileModifiedRole || role == FileAccessedRole) {
+            QFileInfo info = d->model.fileInfo(modelIndex);
+            QDateTime dateTime;
+            if (role == FileModifiedRole) {
+                dateTime = info.lastModified();
+            } else {
+                dateTime = info.lastRead();
+            }
+            rv = dateTime.date().toString(Qt::ISODate) + " " +
+                dateTime.time().toString();
+        }
     }
     return rv;
 }
