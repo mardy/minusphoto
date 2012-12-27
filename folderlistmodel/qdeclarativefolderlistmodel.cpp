@@ -226,7 +226,7 @@ void QDeclarativeFolderListModel::setFolder(const QUrl &folder)
     if ((index.isValid() && d->model.isDir(index)) || folder.toLocalFile().isEmpty()) {
 
         d->folder = folder;
-        QMetaObject::invokeMethod(this, "refresh", Qt::QueuedConnection);
+        d->model.refresh(index);
         emit folderChanged();
     }
 }
