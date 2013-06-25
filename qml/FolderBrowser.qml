@@ -6,6 +6,8 @@ ScrollView {
     property alias folder: folderModel.folder
 
     ListView {
+        id: folderList
+
         focus: true
         model: folderModel
         delegate: FolderDelegate {
@@ -21,6 +23,7 @@ ScrollView {
             showFiles: false
             showDirs: true
             showDotAndDotDot: true
+            onFolderChanged: folderList.currentIndex = 0
         }
 
         Component.onCompleted: interactive = true // QTBUG-31976

@@ -37,6 +37,7 @@ ScrollView {
         FolderListModel {
             id: folderModel
             showDirs: false
+            onFolderChanged: listView.select(0, 0)
         }
 
         ModelSelection {
