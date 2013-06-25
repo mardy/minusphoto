@@ -1,4 +1,4 @@
-PROJECT_NAME = speqtacle
+PROJECT_NAME = minusphoto
 PROJECT_VERSION = 1.0
 
 TOP_SRC_DIR = $$PWD

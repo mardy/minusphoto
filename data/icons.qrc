@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
   <file>not-image.svg</file>
-  <file alias="speqtacle">speqtacle.svg</file>
+  <file alias="minusphoto">minusphoto.svg</file>
 </qresource>
 </RCC>

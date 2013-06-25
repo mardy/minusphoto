@@ -7,6 +7,6 @@
   <file>FolderView.qml</file>
   <file>ImageView.qml</file>
   <file>ResizedImage.qml</file>
-  <file>speqtacle.qml</file>
+  <file>minusphoto.qml</file>
 </qresource>
 </RCC>

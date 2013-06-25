@@ -1,6 +1,6 @@
 include(../common-config.pri)
 
-TARGET = speqtacle
+TARGET = minusphoto
 
 QT += \
     gui \

@@ -2,20 +2,20 @@
 /*
  * Copyright (C) 2012 Alberto Mardegan <info@mardy.it>
  *
- * This file is part of speqtacle.
+ * This file is part of minusphoto.
  *
- * speqtacle is free software: you can redistribute it and/or modify
+ * minusphoto is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * speqtacle is distributed in the hope that it will be useful,
+ * minusphoto is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with speqtacle.  If not, see <http://www.gnu.org/licenses/>.
+ * along with minusphoto.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "types.h"
@@ -30,9 +30,9 @@ Q_DECL_EXPORT int main(int argc, char **argv)
 {
     QGuiApplication app(argc, argv);
 
-    Speqtacle::registerTypes();
+    Minusphoto::registerTypes();
 
-    Speqtacle::View view;
+    Minusphoto::View view;
     QString folder =
         QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
     QStringList args = app.arguments();
@@ -40,7 +40,7 @@ Q_DECL_EXPORT int main(int argc, char **argv)
         folder = args[1];
     }
     view.rootContext()->setContextProperty("startFolder", QUrl::fromLocalFile(folder));
-    view.setSource(QUrl("qrc:/speqtacle.qml"));
+    view.setSource(QUrl("qrc:/minusphoto.qml"));
     view.show();
 
     return app.exec();
