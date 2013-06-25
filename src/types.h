@@ -18,25 +18,13 @@
  * along with speqtacle.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPEQTACLE_VIEW_H
-#define SPEQTACLE_VIEW_H
-
-#include <QQuickView>
+#ifndef SPEQTACLE_TYPES_H
+#define SPEQTACLE_TYPES_H
 
 namespace Speqtacle {
 
-class View: public QQuickView
-{
-    Q_OBJECT
-
-public:
-    explicit View();
-    virtual ~View();
-
-public Q_SLOTS:
-    void switchFullscreen();
-};
+void registerTypes();
 
 }; // namespace
 
-#endif // SPEQTACLE_VIEW_H
+#endif // SPEQTACLE_TYPES_H

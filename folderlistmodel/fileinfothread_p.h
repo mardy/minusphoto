@@ -3,7 +3,7 @@
 ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the examples of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -39,31 +39,75 @@
 **
 ****************************************************************************/
 
-#include <QtQml/qqmlextensionplugin.h>
-#include <QtQml/qqml.h>
+#ifndef FILEINFOTHREAD_P_H
+#define FILEINFOTHREAD_P_H
 
-#include "qquickfolderlistmodel.h"
+#include <QThread>
+#include <QMutex>
+#include <QWaitCondition>
+#include <QFileSystemWatcher>
+#include <QFileInfo>
+#include <QDir>
 
-QT_BEGIN_NAMESPACE
+#include "fileproperty_p.h"
 
-//![class decl]
-class QmlFolderListModelPlugin : public QQmlExtensionPlugin
+class FileInfoThread : public QThread
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
+
+Q_SIGNALS:
+    void directoryChanged(const QString &directory, const QList<FileProperty> &list) const;
+    void directoryUpdated(const QString &directory, const QList<FileProperty> &list, int fromIndex, int toIndex) const;
+    void sortFinished(const QList<FileProperty> &list) const;
 
 public:
-    virtual void registerTypes(const char *uri)
-    {
-        Q_ASSERT(QLatin1String(uri) == QLatin1String("Qt.labs.folderlistmodel"));
-#ifndef QT_NO_DIRMODEL
-        qmlRegisterType<QQuickFolderListModel>(uri,1,0,"FolderListModel");
-        qmlRegisterType<QQuickFolderListModel>(uri,2,0,"FolderListModel");
+    FileInfoThread(QObject *parent = 0);
+    ~FileInfoThread();
+
+    void clear();
+    void removePath(const QString &path);
+    void setPath(const QString &path);
+    void setRootPath(const QString &path);
+    void setSortFlags(QDir::SortFlags flags);
+    void setNameFilters(const QStringList & nameFilters);
+    void setShowFiles(bool show);
+    void setShowDirs(bool showFolders);
+    void setShowDirsFirst(bool show);
+    void setShowDotDot(bool on);
+    void setShowOnlyReadable(bool on);
+
+public Q_SLOTS:
+#ifndef QT_NO_FILESYSTEMWATCHER
+    void dirChanged(const QString &directoryPath);
+    void updateFile(const QString &path);
 #endif
-    }
+
+protected:
+    void run();
+    void getFileInfos(const QString &path);
+    void findChangeRange(const QList<FileProperty> &list, int &fromIndex, int &toIndex);
+
+private:
+    QMutex mutex;
+    QWaitCondition condition;
+    volatile bool abort;
+
+#ifndef QT_NO_FILESYSTEMWATCHER
+    QFileSystemWatcher *watcher;
+#endif
+    QList<FileProperty> currentFileList;
+    QDir::SortFlags sortFlags;
+    QString currentPath;
+    QString rootPath;
+    QStringList nameFilters;
+    bool needUpdate;
+    bool folderUpdate;
+    bool sortUpdate;
+    bool showFiles;
+    bool showDirs;
+    bool showDirsFirst;
+    bool showDotDot;
+    bool showOnlyReadable;
 };
-//![class decl]
 
-QT_END_NAMESPACE
-
-#include "plugin.moc"
+#endif // FILEINFOTHREAD_P_H

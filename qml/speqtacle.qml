@@ -1,17 +1,65 @@
-// import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.1
+import QtQuick 2.0
+import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 
-Rectangle {
+FocusScope {
+    id: root
+
     width: 360
-    height: 360
-    Text {
-        text: qsTr("Hello World")
-        anchors.centerIn: parent
-    }
-    MouseArea {
+    height: 400
+    focus: true
+
+    Keys.onDeletePressed: deleteFile(folderView.selectedFile)
+
+    Rectangle {
         anchors.fill: parent
-        onClicked: {
-            Qt.quit();
+        color: "#efe"
+
+        SplitView {
+            anchors.fill: parent
+            orientation: Qt.Horizontal
+
+            SplitView {
+                Layout.minimumWidth: 120
+                orientation: Qt.Vertical
+
+                FolderBrowser {
+                    id: folderBrowser
+                    Layout.minimumHeight: 64
+                    KeyNavigation.tab: folderView
+                    KeyNavigation.backtab: folderView
+                    focus: true
+                    folder: startFolder
+                }
+
+                FolderView {
+                    id: folderView
+                    KeyNavigation.tab: folderBrowser
+                    KeyNavigation.backtab: folderBrowser
+                    folder: folderBrowser.folder
+                    onSelectedFilesChanged: console.log("Selected files: " + selectedFiles)
+                }
+            }
+
+            ImageView {
+                id: imageView
+                source: folderView.selectedFile
+            }
         }
+    }
+
+    DeletionDialog {
+        id: confirmDeletion
+        visible: false
+
+        //onAccepted: console.log("Accepted")
+        //onRejected: console.log("Rejected")
+    }
+
+    function deleteFile(fileName) {
+        console.log("Deleting " + fileName)
+        confirmDeletion.fileName = fileName
+        confirmDeletion.focus = true
+        confirmDeletion.visible = true
     }
 }

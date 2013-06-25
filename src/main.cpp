@@ -18,16 +18,28 @@
  * along with speqtacle.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "types.h"
 #include "view.h"
 
-#include <QApplication>
+#include <QGuiApplication>
+#include <QQmlContext>
+#include <QStandardPaths>
 #include <QUrl>
 
 Q_DECL_EXPORT int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
+
+    Speqtacle::registerTypes();
 
     Speqtacle::View view;
+    QString folder =
+        QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
+    QStringList args = app.arguments();
+    if (args.count() > 1) {
+        folder = args[1];
+    }
+    view.rootContext()->setContextProperty("startFolder", QUrl::fromLocalFile(folder));
     view.setSource(QUrl("qrc:/speqtacle.qml"));
     view.show();
 

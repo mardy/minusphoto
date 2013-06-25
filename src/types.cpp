@@ -18,25 +18,24 @@
  * along with speqtacle.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPEQTACLE_VIEW_H
-#define SPEQTACLE_VIEW_H
+#include "debug.h"
+#include "model-selection.h"
+#include "size-controller.h"
+#include "types.h"
 
-#include <QQuickView>
+#include <QAbstractListModel>
+#include <QQmlComponent>
+#include <QQmlEngine>
 
 namespace Speqtacle {
 
-class View: public QQuickView
+void registerTypes()
 {
-    Q_OBJECT
-
-public:
-    explicit View();
-    virtual ~View();
-
-public Q_SLOTS:
-    void switchFullscreen();
-};
+    qmlRegisterType<QAbstractListModel>();
+    qmlRegisterType<Speqtacle::ModelSelection>("Speqtacle", 1, 0,
+                                               "ModelSelection");
+    qmlRegisterType<Speqtacle::SizeController>("Speqtacle", 1, 0,
+                                               "SizeController");
+}
 
 }; // namespace
-
-#endif // SPEQTACLE_VIEW_H

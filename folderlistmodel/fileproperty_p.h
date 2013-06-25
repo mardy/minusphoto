@@ -3,7 +3,7 @@
 ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the QtQml module of the Qt Toolkit.
+** This file is part of the examples of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -39,31 +39,56 @@
 **
 ****************************************************************************/
 
-#include <QtQml/qqmlextensionplugin.h>
-#include <QtQml/qqml.h>
+#ifndef FILEPROPERTY_P_H
+#define FILEPROPERTY_P_H
 
-#include "qquickfolderlistmodel.h"
+#include <QFileInfo>
+#include <QDateTime>
 
-QT_BEGIN_NAMESPACE
-
-//![class decl]
-class QmlFolderListModelPlugin : public QQmlExtensionPlugin
+class FileProperty
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface")
-
 public:
-    virtual void registerTypes(const char *uri)
+    FileProperty(const QFileInfo &info)
     {
-        Q_ASSERT(QLatin1String(uri) == QLatin1String("Qt.labs.folderlistmodel"));
-#ifndef QT_NO_DIRMODEL
-        qmlRegisterType<QQuickFolderListModel>(uri,1,0,"FolderListModel");
-        qmlRegisterType<QQuickFolderListModel>(uri,2,0,"FolderListModel");
-#endif
+        mFileName = info.fileName();
+        mFilePath = info.filePath();
+        mBaseName = info.baseName();
+        mSize = info.size();
+        mSuffix = info.completeSuffix();
+        mIsDir = info.isDir();
+        mIsFile = info.isFile();
+        mLastModified = info.lastModified();
+        mLastRead = info.lastRead();
     }
+    ~FileProperty()
+    {}
+
+    inline QString fileName() const { return mFileName; }
+    inline QString filePath() const { return mFilePath; }
+    inline QString baseName() const { return mBaseName; }
+    inline qint64 size() const { return mSize; }
+    inline QString suffix() const { return mSuffix; }
+    inline bool isDir() const { return mIsDir; }
+    inline bool isFile() const { return mIsFile; }
+    inline QDateTime lastModified() const { return mLastModified; }
+    inline QDateTime lastRead() const { return mLastRead; }
+
+    inline bool operator !=(const FileProperty &fileInfo) const {
+        return !operator==(fileInfo);
+    }
+    bool operator ==(const FileProperty &property) const {
+        return ((mFileName == property.mFileName) && (isDir() == property.isDir()));
+    }
+
+private:
+    QString mFileName;
+    QString mFilePath;
+    QString mBaseName;
+    QString mSuffix;
+    qint64 mSize;
+    bool mIsDir;
+    bool mIsFile;
+    QDateTime mLastModified;
+    QDateTime mLastRead;
 };
-//![class decl]
-
-QT_END_NAMESPACE
-
-#include "plugin.moc"
+#endif // FILEPROPERTY_P_H
