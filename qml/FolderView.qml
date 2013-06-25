@@ -1,6 +1,6 @@
+import Minusphoto 1.0
 import QtQuick 2.0
 import QtQuick.Controls 1.0
-import Speqtacle 1.0
 import it.mardy.folderlistmodel 1.0
 
 ScrollView {

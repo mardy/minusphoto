@@ -1,5 +1,5 @@
+import Minusphoto 1.0
 import QtQuick 2.0
-import Speqtacle 1.0
 
 Flickable {
     id: root
