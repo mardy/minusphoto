@@ -13,7 +13,7 @@ FocusScope {
 
     Rectangle {
         anchors.fill: parent
-        color: "#efe"
+        color: "#fff"
 
         SplitView {
             anchors.fill: parent
